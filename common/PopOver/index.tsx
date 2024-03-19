@@ -1,19 +1,47 @@
 "use client"
-import React from 'react'
+import { getDefaultPlacementCss } from '@/utils/helpers'
+import { IPopOverProps } from '@/utils/interfaces'
+import { ReactNode, useLayoutEffect, useRef, useState } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 
-interface PopOverProps{
-  children?:JSX.Element
-}
 
-const PopOver = ({children}:PopOverProps) => {
+const PopOver = (
+  { content, button, fallBackPlacements, defaultPlacement, contentViewLimit }: IPopOverProps
+) => {
+  const [currPlacement, setCurrplacement] = useState(getDefaultPlacementCss(defaultPlacement))
+  const contentRef = useRef<HTMLDivElement | null>(null)
+  useLayoutEffect(() => {
+    if (contentRef && contentRef.current) {
+      const { left, bottom, right, top } = contentRef.current.getBoundingClientRect();
+      if (left < 0) {
+        setCurrplacement(getDefaultPlacementCss("right"))
+      }
+    }
+  }, [])
 
-  console.log(typeof children,"type")
+
+  console.log("curr place is ",currPlacement)
 
   return (
-    <div>
+    <div className='relative w-fit border border-green-300'>
       {
-        children
+        content && (
+          <div className={twMerge("", currPlacement)} ref={contentRef}>
+            {
+              content
+            }
+          </div>
+        )
+      }
+      {
+        button && (
+          <div className=''>
+            {
+              button
+            }
+          </div>
+        )
       }
     </div>
   )
