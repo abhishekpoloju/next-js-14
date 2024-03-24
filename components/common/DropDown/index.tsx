@@ -2,10 +2,10 @@
 import clsx from 'clsx'
 import React, { HTMLProps, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
-import { getDropDownPlacementCss, isInViewPort } from '../../utils/helpers'
-import { IDropDownProps } from '../../utils/interfaces'
-import { useClickAway } from '../../utils/custom-hooks'
 import { autoBackupPlcmts } from '@/utils/constants'
+import { getDropDownPlacementCss, isInViewPort } from '@/utils/helpers'
+import { IDropDownProps } from '@/utils/interfaces'
+import { useClickAway } from '@/utils/custom-hooks'
 
 const DropDown = (
   { content, button, buttonClass, openClass, backupPlcmts, contentClass, containerClass, defaultPlcmt, contentViewLimit, onCloseActions, onOpenActions, customOpen }: IDropDownProps
