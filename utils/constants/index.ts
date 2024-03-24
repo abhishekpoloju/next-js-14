@@ -1,4 +1,6 @@
-export const autoBackupPlcmts = [
+import { IPlacementTypes } from "../interfaces";
+
+export const autoBackupPlcmts: Array<IPlacementTypes> = [
   "top",
   "top-start",
   "top-end",

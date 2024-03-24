@@ -32,5 +32,5 @@ export interface IDropDownProps {
   contentViewLimit?: "viewport" | "root";
   onCloseActions?: () => void;
   onOpenActions?: () => void;
-  externalOpen?:boolean
+  customOpen?:boolean
 }

@@ -1,7 +1,7 @@
 import { HTMLProps } from "react";
 import { IPlacementTypes } from "../interfaces";
 
-export function getDefaultPlacementCss(
+export function getDropDownPlacementCss(
   placement: IPlacementTypes | undefined
 ): HTMLProps<HTMLElement>["className"] {
   switch (placement) {
@@ -130,5 +130,15 @@ export function getDefaultPlacementCss(
     default:
       return "";
     // return {};
+  }
+}
+
+export function isInViewPort(
+  plcmtType: IPlacementTypes,
+  targetElementRef: React.MutableRefObject<HTMLElement | null>,
+  popperElementRef: React.MutableRefObject<HTMLElement | null>
+) {
+  if (targetElementRef.current && popperElementRef.current) {
+    console.log(plcmtType)
   }
 }
