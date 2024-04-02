@@ -1,0 +1,111 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  accountId          String    @id @unique @default(cuid())
+  userId             String
+  providerType       String
+  providerId         String
+  providerAccountId  String
+  refreshToken       String?
+  accessToken        String?
+  accessTokenExpires DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  user               User      @relation(fields: [userId], references: [userId])
+
+  @@unique([providerId, providerAccountId])
+}
+
+model Session {
+  sessionId    String   @id @unique @default(cuid())
+  userId       String
+  expires      DateTime
+  sessionToken String   @unique
+  accessToken  String   @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [userId])
+}
+
+model User {
+  userId        String      @id @unique @default(cuid())
+  name          String?
+  email         String?     @unique
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  accounts      Account[]
+  sessions      Session[]
+  jobs          Job[]       @relation("created")
+  accessJobs    Job[]       @relation("access")
+  departmentId  Int?
+  department    Department? @relation(fields: [departmentId], references: [departmentId], "userDepartment")
+}
+
+model VerificationRequest {
+  verificationRequestId String   @id @unique @default(cuid())
+  identifier            String
+  token                 String   @unique
+  expires               DateTime
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@unique([identifier, token])
+}
+
+model Job {
+  jobId          String        @id @unique @default(cuid())
+  authorId       String
+  author         User          @relation(fields: [authorId], references: [userId], "created")
+  accesUsers     User[]        @relation("access")
+  jobTitle       String
+  jobDescription String?
+  jobType        JobType
+  requiredSkills Skill[]       @relation("requiredSkills")
+  optionalSkills Skill[]       @relation("OptionalJobId")
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  jobActivity    JobActivity[]
+}
+
+model JobRequirment {
+  jobRequiremntId     Int          @id @unique @default(autoincrement())
+  cgpa                Float?
+  eligibleDepartments Department[] @relation("requiredDepartment")
+}
+
+model JobActivity {
+  activityId           Int      @id @unique @default(autoincrement())
+  activityMessage      String
+  activityDescripttion String
+  jobId                String
+  job                  Job      @relation(fields: [jobId], references: [jobId])
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}
+
+model Skill {
+  skillId       Int     @id @unique @default(autoincrement())
+  name          String
+  requiredJob   Job     @relation(fields: [requiredJobId], references: [jobId], "requiredSkills")
+  requiredJobId String
+  optionalJob   Job?    @relation(fields: [OptionalJobId], references: [jobId], "OptionalJobId")
+  OptionalJobId String?
+}
+
+model Department {
+  departmentId  Int           @id @unique @default(autoincrement())
+  name          String
+  requirementId Int
+  requirement   JobRequirment @relation(fields: [requirementId], references: [jobRequiremntId], "requiredDepartment")
+  users         User[]        @relation("userDepartment")
+}
+
+enum JobType {
+  PUBLIC
+  EXCLUSIVE
+}

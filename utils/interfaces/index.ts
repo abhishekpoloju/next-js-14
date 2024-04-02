@@ -28,9 +28,21 @@ export interface IDropDownProps {
   openClass?: HTMLProps<HTMLElement>["className"];
   containerClass?: HTMLProps<HTMLElement>["className"];
   defaultPlcmt?: IPlacementTypes;
-  backupPlcmts?: Array<IPlacementTypes>|"auto";
+  backupPlcmts?: Array<IPlacementTypes> | "auto";
   contentViewLimit?: "viewport" | "root";
   onCloseActions?: () => void;
   onOpenActions?: () => void;
-  customOpen?:boolean
+  customOpen?: boolean;
+}
+
+export interface IModalProps {
+  open: boolean;
+  rootClass?: HTMLProps<HTMLElement>["className"];
+  children: ReactNode;
+  showOverlay?: boolean;
+  overLayClass?: HTMLProps<HTMLElement>["className"];
+  childrenClass?: HTMLProps<HTMLElement>["className"];
+  customOverLay?: ReactNode;
+  handleModal?: (flag: boolean) => void;
+  closeOnOverlay?: boolean;
 }
