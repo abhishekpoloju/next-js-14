@@ -1,3 +1,7 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -44,6 +48,7 @@ model User {
   accessJobs    Job[]       @relation("access")
   departmentId  Int?
   department    Department? @relation(fields: [departmentId], references: [departmentId], "userDepartment")
+  skills        Skill[]     @relation("userSkills")
 }
 
 model VerificationRequest {
@@ -93,8 +98,9 @@ model Skill {
   name          String
   requiredJob   Job     @relation(fields: [requiredJobId], references: [jobId], "requiredSkills")
   requiredJobId String
-  optionalJob   Job?    @relation(fields: [OptionalJobId], references: [jobId], "OptionalJobId")
   OptionalJobId String?
+  optionalJob   Job?    @relation(fields: [OptionalJobId], references: [jobId], "OptionalJobId")
+  users         User[]  @relation("userSkills")
 }
 
 model Department {

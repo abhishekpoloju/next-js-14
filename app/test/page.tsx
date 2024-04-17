@@ -4,7 +4,6 @@ import Modal from '@/components/common/Modal'
 import React, { useState } from 'react'
 import Image from 'next/image'
 const Page = () => {
-
   const [modalOpen, setModalOpen] = useState(false);
 
   const handleToggleModal = (flag: boolean) => {
